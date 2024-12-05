@@ -78,7 +78,7 @@ export namespace Account {
 
     const web3auth = new Web3Auth({
       clientId:
-        "BFolnrXUpJ8WScbI0MHGllgsP4Jgyy9tuAyfd4rLJ0d07b1iGMhZw3Eu2E10HECY2KIqYczag4_Z4q7KsEojUWU", // get it from Web3Auth Dashboard
+        "BO8lyCzsbD18BRA6yZzYucDg4naK6cJiX9ZVhAwEu9Bxx-0_gRT7mgAdJGL-Bxxc7bhkVwY24At6-7Wm8hytDcA", // get it from Web3Auth Dashboard
       web3AuthNetwork: "sapphire_devnet",
       chainConfig:  {
         chainNamespace: "eip155",
