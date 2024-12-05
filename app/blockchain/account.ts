@@ -29,10 +29,10 @@ import {
 import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import "ethers";
-import { chess, type Client, queryClient } from '../config'
-import { ExperimentDelegation } from '../contracts'
+import { chess, type Client, queryClient } from "@/app/blockchain/config"
 import { ethers } from 'ethers'
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import {ExperimentDelegation} from "@/app/blockchain/contracts";
 export namespace Account {
   /////////////////////////////////////////////////////////
   // Types
