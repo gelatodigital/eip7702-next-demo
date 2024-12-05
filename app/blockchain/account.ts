@@ -14,6 +14,7 @@ import {
 } from 'viem'
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
 import {
+  call,
   readContract,
   waitForTransactionReceipt,
   writeContract,
@@ -25,10 +26,13 @@ import {
   parsePublicKey,
   sign,
 } from 'webauthn-p256'
-
-import { type Client, queryClient } from './config'
-import { ExperimentDelegation } from './contracts'
-
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/modal";
+import "ethers";
+import { chess, type Client, queryClient } from '../config'
+import { ExperimentDelegation } from '../contracts'
+import { ethers } from 'ethers'
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 export namespace Account {
   /////////////////////////////////////////////////////////
   // Types
@@ -59,7 +63,55 @@ export namespace Account {
   export async function create({ client }: { client: Client }) {
     // Generate a new EOA. This Account will be used to inject the ExperimentDelegation
     // contract onto it.
-    const account = privateKeyToAccount(generatePrivateKey())
+    const chainConfi2 = {
+      chainId: "0xaa36a7",
+      displayName: "Ethereum Sepolia Testnet",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      tickerName: "Ethereum",
+      ticker: "ETH",
+      decimals: 18,
+      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+      blockExplorerUrl: "https://sepolia.etherscan.io",
+      logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+    };
+
+
+    const web3auth = new Web3Auth({
+      clientId:
+        "BFolnrXUpJ8WScbI0MHGllgsP4Jgyy9tuAyfd4rLJ0d07b1iGMhZw3Eu2E10HECY2KIqYczag4_Z4q7KsEojUWU", // get it from Web3Auth Dashboard
+      web3AuthNetwork: "sapphire_devnet",
+      chainConfig:  {
+        chainNamespace: "eip155",
+        chainId: ethers.toBeHex(chess.id),
+        rpcTarget: chess.rpcUrls.default.http[0],
+        // Avoid using public rpcTarget in production.
+        // Use services like Infura, Quicknode etc
+        displayName: chess.name as string,
+        blockExplorer: chess.blockExplorers.default.url,
+        ticker: "ETH",
+        tickerName: "ETH",
+      }
+    });
+
+    await web3auth!.initModal({
+      modalConfig: {
+
+        // Disable TORUS
+        [WALLET_ADAPTERS.TORUS_EVM]: {
+          label: "torus",
+          showOnModal: false,
+        },
+      },
+    });
+
+
+    const web3authProvider = await web3auth!.connect();
+    let privatekey = ("0x" +
+      (await web3auth.provider?.request({
+        method: "eth_private_key", // use "private_key" for other non-evm chains
+      }))) as "0x${string}";
+
+    const account = privateKeyToAccount(privatekey)
 
     // Create a WebAuthn credential which will be used as an authorized key
     // for the EOA.
@@ -102,8 +154,8 @@ export namespace Account {
                                     client,
                                     publicKey,
                                   }: { account: PrivateKeyAccount; client: Client; publicKey: PublicKey }) {
-    const nonce = BigInt(0) // initial nonce will always be 0
-    const expiry = BigInt(0) // no expiry
+    const nonce = 0n // initial nonce will always be 0
+    const expiry = 0n // no expiry
 
     // Compute digest to sign for the authorize function.
     const digest = keccak256(
@@ -168,7 +220,7 @@ export namespace Account {
       address,
       abi: ExperimentDelegation.abi,
       functionName: 'keys',
-      args: [BigInt(0)],
+      args: [0n],
     })
 
     queryClient.setQueryData(['account'], {
@@ -208,7 +260,7 @@ export namespace Account {
           [
             0,
             call.to,
-            call.value ?? BigInt(0),
+            call.value ?? 0n,
             BigInt(size(call.data ?? '0x')),
             call.data ?? '0x',
           ],
