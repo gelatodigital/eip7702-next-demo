@@ -14,7 +14,7 @@ interface HeaderProps {
 export default function Header({ isLoggedIn, onLogin, addLog, walletAddress, setShowLoginDialog, showLoginDialog }: HeaderProps) {
 
   const handleLogin = () => {
-    setShowLoginDialog(true)
+    // setShowLoginDialog(true)
     addLog('User clicked Log in.')
     onLogin()
   }
