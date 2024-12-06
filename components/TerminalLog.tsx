@@ -37,6 +37,7 @@ export default function TerminalLog({ logs, isOpen, setIsOpen }: TerminalLogProp
           </p>
         ))}
         <div ref={logEndRef} />
+        <br />
       </div>
     </div>
   )
