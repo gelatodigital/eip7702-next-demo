@@ -211,7 +211,7 @@ export default function AvatarMarketplace({
   return (
     <div className="p-4 sm:px-8 pb-8 md:pb-0 bg-black w-full max-w-[1200px]">
       <h2 className="text-2xl font-bold mb-8 text-center text-white drop-shadow-md">
-        Sloths Marketplace
+        Marketplace
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
         {listings.map((listing) => (
