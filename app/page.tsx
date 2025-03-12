@@ -13,7 +13,11 @@ import {
   createKernelAccountClient,
   getUserOperationGasPrice,
 } from "@zerodev/sdk";
-import { getEntryPoint, KERNEL_V2_4 } from "@zerodev/sdk/constants";
+import {
+  getEntryPoint,
+  KERNEL_V2_4,
+  KERNEL_V3_1,
+} from "@zerodev/sdk/constants";
 import { createPublicClient, encodeFunctionData } from "viem";
 import { http } from "wagmi";
 import UserProfile from "@/components/UserProfile";
@@ -22,6 +26,7 @@ import { EmptyState } from "@/components/EmptyState";
 import {
   arbitrumBlueberry,
   chainConfig,
+  mikeTestnet,
   tokenDetails,
 } from "./blockchain/config";
 import { Toaster, toast } from "sonner";
@@ -34,8 +39,8 @@ import { refineNonNull } from "./utils";
 
 interface HomeProps {}
 
-let CHAIN = arbitrumBlueberry;
-const CHAIN_ID = arbitrumBlueberry.id;
+let CHAIN = chainConfig;
+const CHAIN_ID = CHAIN.id;
 
 const GELATO_API_KEY = process.env.NEXT_PUBLIC_GELATO_API_KEY!;
 
@@ -66,7 +71,7 @@ export default function Home({}: HomeProps) {
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
   const [loadingTokens, setLoadingTokens] = useState<boolean>(false);
 
-  const kernelVersion = KERNEL_V2_4;
+  const kernelVersion = KERNEL_V3_1;
 
   const createKernelClient = async () => {
     const publicClient = createPublicClient({
@@ -127,7 +132,7 @@ export default function Home({}: HomeProps) {
     });
 
     // Step 4: Configure ZeroDev Kernel account
-    const entryPoint = getEntryPoint("0.6");
+    const entryPoint = getEntryPoint("0.7");
     const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
       signer: viemAccount,
       entryPoint,
