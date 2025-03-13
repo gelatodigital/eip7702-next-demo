@@ -67,11 +67,12 @@ const WalletCard = ({
                 />
               </svg>
               <div>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  These are sponsored transactions powered by Gelato's 1Balance
+              <p className="text-sm text-gray-300 leading-relaxed">
+                  Get 2 sponsored transactions every hour.
                 </p>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Begin by claiming your tokens to start staking.
+                  If you stake, after 5 min you will be able to enjoy free
+                  txs.
                 </p>
               </div>
             </div>

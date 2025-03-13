@@ -9,30 +9,40 @@ import { signerToEcdsaValidator } from "@zerodev/ecdsa-validator";
 import {
   createKernelAccount,
   createKernelAccountClient,
+  createZeroDevPaymasterClient,
   getUserOperationGasPrice,
 } from "@zerodev/sdk";
 import { getEntryPoint, KERNEL_V3_1 } from "@zerodev/sdk/constants";
-import { encodeFunctionData } from "viem";
+import { createPublicClient, encodeFunctionData } from "viem";
 import { http } from "wagmi";
 import UserProfile from "@/components/UserProfile";
 import { Contract, JsonRpcProvider } from "ethers";
 import { EmptyState } from "@/components/EmptyState";
 import { chainConfig, tokenDetails } from "./blockchain/config";
 import { Toaster, toast } from "sonner";
-import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { useDynamicContext, Wallet, WalletConnector } from "@dynamic-labs/sdk-react-core";
+
+
+import { projectId } from "./constants";
 interface HomeProps {}
 
 let CHAIN = chainConfig;
 const CHAIN_ID = chainConfig.id;
 
 const GELATO_API_KEY = process.env.NEXT_PUBLIC_GELATO_API_KEY!;
+const BUNDLER_URL = `https://rpc.zerodev.app/api/v2/bundler/${projectId}?provider=GELATO`;
+const PAYMASTER_URL = `https://rpc.zerodev.app/api/v2/paymaster/${projectId}?provider=GELATO`;
+const PASSKEY_SERVER_URL = `https://passkeys.zerodev.app/api/v3/${projectId}`;
+
+let kernelAccount:any;
+let kernelClient:any;
 
 export default function Home({}: HomeProps) {
   const [accountAddress, setAccountAddress] = useState("");
   const [isKernelClientReady, setIsKernelClientReady] = useState(false);
   const [userOpHash, setUserOpHash] = useState("");
-  const [kernelAccount, setKernelAccount] = useState<any>(null);
-  const [kernelClient, setKernelClient] = useState<any>(null);
+ // const [kernelAccount, setKernelAccount] = useState<any>(null);
+ // const [kernelClient, setKernelClient] = useState<any>(null);
   const [logs, setLogs] = useState<(string | JSX.Element)[]>([]);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
@@ -45,10 +55,17 @@ export default function Home({}: HomeProps) {
 
   const kernelVersion = KERNEL_V3_1;
   const { primaryWallet, handleLogOut } = useDynamicContext();
+
   const createKernelClient = async () => {
     console.log("Creating kernel client");
-    const publicClient = await (primaryWallet as any).getPublicClient();
-    const walletClient = await (primaryWallet as any).getWalletClient();
+   
+
+    const publicClient = createPublicClient({
+      transport: http(),
+      chain: CHAIN,
+    });
+    //const publicClient = await (primaryWallet as any).getPublicClient();
+    const walletClient =  await (primaryWallet?.connector as any).getWalletClient();
     const entryPoint = getEntryPoint("0.7");
     const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
       signer: walletClient,
@@ -56,8 +73,10 @@ export default function Home({}: HomeProps) {
       kernelVersion,
     });
 
+    
+
     // Create Kernel account with validator
-    const kernelAccount = await createKernelAccount(publicClient, {
+    kernelAccount = await createKernelAccount(publicClient, {
       plugins: {
         sudo: ecdsaValidator,
       },
@@ -65,25 +84,44 @@ export default function Home({}: HomeProps) {
       kernelVersion,
     });
     console.log(kernelAccount.address);
-
-    const kernelClient = createKernelAccountClient({
+    const paymasterClient = createZeroDevPaymasterClient({
+      chain:CHAIN,
+      transport: http(PAYMASTER_URL),
+    });
+   kernelClient = createKernelAccountClient({
       account: kernelAccount,
       chain: CHAIN,
-      bundlerTransport: http(
-        `https://api.gelato.digital/bundlers/${CHAIN_ID}/rpc?sponsorApiKey=${GELATO_API_KEY}`
-      ),
+      bundlerTransport: http(BUNDLER_URL),
       client: publicClient,
-      userOperation: {
-        estimateFeesPerGas: async ({ bundlerClient }) => {
-          return getUserOperationGasPrice(bundlerClient);
+      paymaster: {
+        getPaymasterData: async (userOperation) => {
+          return paymasterClient.sponsorUserOperation({ userOperation });
         },
       },
     });
+
+
+  //   kernelClient = createKernelAccountClient({
+  //     account: kernelAccount,
+  //     chain: CHAIN,
+  //     bundlerTransport: http(BUNDLER_URL) //  `https://api.gelato.digital/bundlers/${CHAIN_ID}/rpc?sponsorApiKey=${GELATO_API_KEY}`
+  // ,
+  //     client: publicClient,
+  //     userOperation: {
+  //       estimateFeesPerGas: async ({ bundlerClient }) => {
+  //         return getUserOperationGasPrice(bundlerClient);
+  //       },
+  //     },
+  //   });
+
+    
+
+
     setUser(kernelAccount.address);
-    setKernelAccount(kernelAccount);
+    //setKernelAccount(kernelAccount);
     setAccountAddress(kernelAccount.address);
     checkIsDeployed(kernelAccount.address);
-    setKernelClient(kernelClient);
+    //setKernelClient(kernelClient);
     setIsKernelClientReady(true);
     return kernelClient;
   };
@@ -125,8 +163,8 @@ export default function Home({}: HomeProps) {
 
   const dropToken = async () => {
     setLoadingTokens(true);
-    try {
-      const kernelClient = await createKernelClient();
+   // try {
+     // const kernelClient = await createKernelClient();
       let data = encodeFunctionData({
         abi: tokenDetails.abi,
         functionName: "drop",
@@ -160,25 +198,25 @@ export default function Home({}: HomeProps) {
       addLog(
         "Your tokens will appear in the dashboard once the transaction is indexed (15-30 seconds)"
       );
-    } catch (error: any) {
-      console.log(error);
-      toast.error(`Error claiming token. Check the logs`);
-      addLog(
-        `Error claiming tokens: ${
-          typeof error === "string"
-            ? error
-            : error?.message || "Unknown error occurred"
-        }`
-      );
-    } finally {
-      setLoadingTokens(false);
-    }
+    // } catch (error: any) {
+    //   console.log(error);
+    //   toast.error(`Error claiming token. Check the logs`);
+    //   addLog(
+    //     `Error claiming tokens: ${
+    //       typeof error === "string"
+    //         ? error
+    //         : error?.message || "Unknown error occurred"
+    //     }`
+    //   );
+    // } finally {
+    //   setLoadingTokens(false);
+    // }
   };
 
   const stakeToken = async () => {
     setLoadingTokens(true);
     try {
-      const kernelClient = await createKernelClient();
+    // const kernelClient = await createKernelClient();
       const provider = new JsonRpcProvider(chainConfig.rpcUrls.default.http[0]);
       const droppStakeContract = new Contract(
         tokenDetails.address,

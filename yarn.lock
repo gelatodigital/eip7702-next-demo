@@ -796,6 +796,13 @@
   dependencies:
     "@dynamic-labs/logger" "4.9.1"
 
+"@dynamic-labs/assert-package-version@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/assert-package-version/-/assert-package-version-4.9.2.tgz#442820442ec4e3741676036e64eb60f66bc7075f"
+  integrity sha512-ghml+PgQ14tQhXIGNyqeQ9o4I1riRJIgtDPwDX3ZRQ7zBpRiPigAz+OHnjNE1gZ+8TOVpXW0T0t0booOnPC6Sg==
+  dependencies:
+    "@dynamic-labs/logger" "4.9.2"
+
 "@dynamic-labs/embedded-wallet-evm@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@dynamic-labs/embedded-wallet-evm/-/embedded-wallet-evm-4.9.1.tgz#09dfc15f24ac8ce4299a8451154e543b30145f41"
@@ -832,6 +839,23 @@
     "@turnkey/iframe-stamper" "2.0.0"
     "@turnkey/webauthn-stamper" "0.5.0"
 
+"@dynamic-labs/ethereum-aa@^4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/ethereum-aa/-/ethereum-aa-4.9.2.tgz#4a838ee31c6c35baa7918a737da00758f9957b34"
+  integrity sha512-vdn+Sb1oLvJheSoPbaGSLcbWM30UQQDz0MS/Ex2EzF/M26KyzQ+tnnHTjTEYek/D53icT7S9+Mm//SQttoNFQg==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/ethereum-core" "4.9.2"
+    "@dynamic-labs/logger" "4.9.2"
+    "@dynamic-labs/sdk-api-core" "0.0.640"
+    "@dynamic-labs/types" "4.9.2"
+    "@dynamic-labs/utils" "4.9.2"
+    "@dynamic-labs/wallet-book" "4.9.2"
+    "@dynamic-labs/wallet-connector-core" "4.9.2"
+    "@zerodev/ecdsa-validator" "5.4.4"
+    "@zerodev/multi-chain-ecdsa-validator" "5.4.3"
+    "@zerodev/sdk" "5.4.26"
+
 "@dynamic-labs/ethereum-core@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@dynamic-labs/ethereum-core/-/ethereum-core-4.9.1.tgz#fb6aa6af964a38a0130db4d52d73550141c15b03"
@@ -845,6 +869,20 @@
     "@dynamic-labs/utils" "4.9.1"
     "@dynamic-labs/wallet-book" "4.9.1"
     "@dynamic-labs/wallet-connector-core" "4.9.1"
+
+"@dynamic-labs/ethereum-core@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/ethereum-core/-/ethereum-core-4.9.2.tgz#931407eb96eba54379aba421d291cde98d6ba93e"
+  integrity sha512-rp1J1Yb9uPU4T3pMl+jNmtn5Dtoyoyxm6yMKwzAdoBkLL1kca7NJavmpwJgkWqvmM4r7b2gpK3Jca1mtsx4JJA==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/logger" "4.9.2"
+    "@dynamic-labs/rpc-providers" "4.9.2"
+    "@dynamic-labs/sdk-api-core" "0.0.640"
+    "@dynamic-labs/types" "4.9.2"
+    "@dynamic-labs/utils" "4.9.2"
+    "@dynamic-labs/wallet-book" "4.9.2"
+    "@dynamic-labs/wallet-connector-core" "4.9.2"
 
 "@dynamic-labs/ethereum@^4.9.1":
   version "4.9.1"
@@ -884,10 +922,26 @@
     "@dynamic-labs/logger" "4.9.1"
     sharp "0.33.5"
 
+"@dynamic-labs/iconic@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/iconic/-/iconic-4.9.2.tgz#5e719bfb95bbb9ab1b3a1536fdab0eff31a6d8a8"
+  integrity sha512-UC4YYLaCStUDL2S26vyS+v9kOjPPyb4m8+8Eosr2zmMOfZg9fikZhPctdLqtMlunhnH5xye3/XtEAq9GRaYcfQ==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/logger" "4.9.2"
+    sharp "0.33.5"
+
 "@dynamic-labs/logger@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@dynamic-labs/logger/-/logger-4.9.1.tgz#f216ae568819165ff696044355ec6eda861de721"
   integrity sha512-J3wF7DMsv79l3ChdHPxP63XD/1Uan6D504PDy/SUomJGZct+NKoN6tm1WTBu8m9jH4DI8vrl3E/0slDXfYBMng==
+  dependencies:
+    eventemitter3 "5.0.1"
+
+"@dynamic-labs/logger@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/logger/-/logger-4.9.2.tgz#aa7a1cca1ee5bd3b7f9538318b779d186aba2ec9"
+  integrity sha512-4TWcWpRa1so3YfxrsYV27tmGCYG+OtSheRHeN+XwUxlptXbhBB/OSB2cQkKZ4vBmdpJrqIAeYsKS8bLrrxoRfw==
   dependencies:
     eventemitter3 "5.0.1"
 
@@ -913,10 +967,23 @@
     "@dynamic-labs/assert-package-version" "4.9.1"
     "@dynamic-labs/types" "4.9.1"
 
+"@dynamic-labs/rpc-providers@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/rpc-providers/-/rpc-providers-4.9.2.tgz#a2b701db5d6336c2e70aa7f1f4a51dc2608c9048"
+  integrity sha512-F3ybkNkzBSPTXJi87+dtD35634FnX86QpwqpvQQX0msqyWWSGcHDE4ADDvgs7PKZCFCo8+Pbb78jz9G+LHhLqg==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/types" "4.9.2"
+
 "@dynamic-labs/sdk-api-core@0.0.638":
   version "0.0.638"
   resolved "https://registry.yarnpkg.com/@dynamic-labs/sdk-api-core/-/sdk-api-core-0.0.638.tgz#08a183332110258ad08b6ff5a8162a09e2f06079"
   integrity sha512-mSvOZCxqr//3GHK0Ycw2XCNGthIyFDqGnOWltkkKhKQ0LWOdZLfMisAuyfTQwEnOBAwTCjYpAQsH4isDTmZXzA==
+
+"@dynamic-labs/sdk-api-core@0.0.640":
+  version "0.0.640"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/sdk-api-core/-/sdk-api-core-0.0.640.tgz#3aa11321b4a89c6f334b1924cfd6ab65ec324c84"
+  integrity sha512-B6VkEfKHbj/Tr/u/WQWZTs94kxnPHr+vlnyOq/rPjeyt4z3bfeR72b57GZpMRRCwcgIPs3f2+DhPviQyKKKN0A==
 
 "@dynamic-labs/sdk-react-core@^4.9.1":
   version "4.9.1"
@@ -963,6 +1030,14 @@
     "@dynamic-labs/assert-package-version" "4.9.1"
     "@dynamic-labs/sdk-api-core" "0.0.638"
 
+"@dynamic-labs/types@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/types/-/types-4.9.2.tgz#682f42892e3d90494b8852810efcad4752b45fa7"
+  integrity sha512-fqiyFf9Gfj0a24OLqscMbDhwJ5Zo9owAAEEpLjw88PPW4PdNFogcFJ2TymVYgAsW91dvD/CK1z8iYJmOfaz0lA==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/sdk-api-core" "0.0.640"
+
 "@dynamic-labs/utils@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@dynamic-labs/utils/-/utils-4.9.1.tgz#10c57e5fd5c3d1abbe244998c6a92db8391a300f"
@@ -972,6 +1047,19 @@
     "@dynamic-labs/logger" "4.9.1"
     "@dynamic-labs/sdk-api-core" "0.0.638"
     "@dynamic-labs/types" "4.9.1"
+    buffer "6.0.3"
+    eventemitter3 "5.0.1"
+    tldts "6.0.16"
+
+"@dynamic-labs/utils@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/utils/-/utils-4.9.2.tgz#1d8b1c4c09347e8202c2fbbc4b03c8f5e8b1c0b2"
+  integrity sha512-0ieYpvy9SGWpqC2q9vavpupDFnWHaYpCBiKxN2K4HZDCS6bTZWXZJ/fmByu0evIeXlzo4o6HXwR7+4/TDJvf8Q==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/logger" "4.9.2"
+    "@dynamic-labs/sdk-api-core" "0.0.640"
+    "@dynamic-labs/types" "4.9.2"
     buffer "6.0.3"
     eventemitter3 "5.0.1"
     tldts "6.0.16"
@@ -989,6 +1077,19 @@
     util "0.12.5"
     zod "3.22.4"
 
+"@dynamic-labs/wallet-book@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/wallet-book/-/wallet-book-4.9.2.tgz#5543014aedbbf2fa7166a9e752c49b858b2df610"
+  integrity sha512-kAh/xE95p6mW2sqMv7Es0dVZ+bHq+20N8HYsYbupY/Q0wTSSgEmFtwnSfGzdNJma8bzR232/o1HwlwKAhrJtrg==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/iconic" "4.9.2"
+    "@dynamic-labs/logger" "4.9.2"
+    "@dynamic-labs/utils" "4.9.2"
+    eventemitter3 "5.0.1"
+    util "0.12.5"
+    zod "3.22.4"
+
 "@dynamic-labs/wallet-connector-core@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@dynamic-labs/wallet-connector-core/-/wallet-connector-core-4.9.1.tgz#3a5e0eac15f5ba01c6e5d61b3a3746fbc274ae0d"
@@ -1001,6 +1102,20 @@
     "@dynamic-labs/types" "4.9.1"
     "@dynamic-labs/utils" "4.9.1"
     "@dynamic-labs/wallet-book" "4.9.1"
+    eventemitter3 "5.0.1"
+
+"@dynamic-labs/wallet-connector-core@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@dynamic-labs/wallet-connector-core/-/wallet-connector-core-4.9.2.tgz#4f4e49233d2c683e72675c08cbf5bfc3856ffd57"
+  integrity sha512-l4wiaERKPk4acyUNWuHUVwREPQIQLdwMZ2ECM0O/U3FlybIy8cL/ORzdj+qoYvUODtjhZgQ/xKHIT5WWkRo9sw==
+  dependencies:
+    "@dynamic-labs/assert-package-version" "4.9.2"
+    "@dynamic-labs/logger" "4.9.2"
+    "@dynamic-labs/rpc-providers" "4.9.2"
+    "@dynamic-labs/sdk-api-core" "0.0.640"
+    "@dynamic-labs/types" "4.9.2"
+    "@dynamic-labs/utils" "4.9.2"
+    "@dynamic-labs/wallet-book" "4.9.2"
     eventemitter3 "5.0.1"
 
 "@dynamic-labs/webauthn@4.9.1":
@@ -3874,7 +3989,7 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@simplewebauthn/browser@9.0.1":
+"@simplewebauthn/browser@9.0.1", "@simplewebauthn/browser@^9.0.1":
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@simplewebauthn/browser/-/browser-9.0.1.tgz#46a12c2bcefcb199f7fcb6a7e883531cd6efde17"
   integrity sha512-wD2WpbkaEP4170s13/HUxPcAV5y4ZXaKo1TfNklS5zDefPinIgXOpgz1kpEvobAsaLPa2KeH7AKKX/od1mrBJw==
@@ -4833,10 +4948,19 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@zerodev/ecdsa-validator@^5.4.4":
+"@zerodev/ecdsa-validator@5.4.4", "@zerodev/ecdsa-validator@^5.4.4":
   version "5.4.4"
   resolved "https://registry.yarnpkg.com/@zerodev/ecdsa-validator/-/ecdsa-validator-5.4.4.tgz#faf1218a4b00a66dfb91803bb8a2ae575cfd305f"
   integrity sha512-PDmNX3GmmMh2MEpvkBpIl2s1KgmmI6NW9b8K6z5eMZsoM/f5FWgCuboUOGKX1PltNp3Rqo9OY/hNjzCyB4Kmuw==
+
+"@zerodev/multi-chain-ecdsa-validator@5.4.3":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@zerodev/multi-chain-ecdsa-validator/-/multi-chain-ecdsa-validator-5.4.3.tgz#32a325d5c5ccc563b6871b705c65134646a6c966"
+  integrity sha512-qnc0+M1YiwrYYS9moitjuD5n6818w2ZU2wfaH2Wh44zguYNQ7kPCT2AJJ3VsRfFjD4npNVtigDFfW5rNuc+55g==
+  dependencies:
+    "@simplewebauthn/browser" "^9.0.1"
+    "@simplewebauthn/typescript-types" "^8.3.4"
+    merkletreejs "^0.3.11"
 
 "@zerodev/passkey-validator@5.4.0":
   version "5.4.0"
@@ -4846,7 +4970,7 @@
     "@noble/curves" "^1.3.0"
     "@simplewebauthn/browser" "^8.3.4"
 
-"@zerodev/sdk@^5.4.26":
+"@zerodev/sdk@5.4.26", "@zerodev/sdk@^5.4.26":
   version "5.4.26"
   resolved "https://registry.yarnpkg.com/@zerodev/sdk/-/sdk-5.4.26.tgz#fe092d6d3fffac0018e0a5cf9717dccb0fca9b02"
   integrity sha512-vzWjoBrus/54SVg+VhjFG0fr2M99208+78ya62tLyuYJzx8PTlLbBfSlzVYHYGtGFbhinmcYelM0q1CuOa4arQ==
@@ -5117,6 +5241,11 @@ base64-js@^1.3.1, base64-js@^1.5.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
+bignumber.js@^9.0.1:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
+  integrity sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==
+
 binary-extensions@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
@@ -5130,6 +5259,11 @@ bl@^4.1.0:
     buffer "^5.5.0"
     inherits "^2.0.4"
     readable-stream "^3.4.0"
+
+bn.js@4.11.6:
+  version "4.11.6"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
+  integrity sha512-XWwnNNFCuuSQ0m3r3C4LE3EiORltHd9M05pq6FOlVeiophzRbMo50Sbz1ehl8K3Z+jw9+vmgnXefY1hz8X+2wA==
 
 bn.js@^4.11.9:
   version "4.12.1"
@@ -5219,6 +5353,11 @@ buffer-from@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
+
+buffer-reverse@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/buffer-reverse/-/buffer-reverse-1.0.1.tgz#49283c8efa6f901bc01fa3304d06027971ae2f60"
+  integrity sha512-M87YIUBsZ6N924W57vDwT/aOu8hw7ZgdByz6ijksLjmHJELBASmYTTlNHRgjE+pTsT9oJXGaDSgqqwfdHotDUg==
 
 buffer@6.0.3, buffer@^6.0.3:
   version "6.0.3"
@@ -5668,6 +5807,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.3:
   integrity sha512-HsZgeVYaG+b5zA+9PbIPGq4+J/CJynJuearykPsXx4V/eMhyQ5EDVg3Ak2FBZtVXCiOLu/U7IiwDHTr9MA+IKw==
   dependencies:
     uncrypto "^0.1.3"
+
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 css.escape@^1.5.1:
   version "1.5.1"
@@ -6133,7 +6277,14 @@ eth-rpc-errors@^4.0.2, eth-rpc-errors@^4.0.3:
   dependencies:
     fast-safe-stringify "^2.0.6"
 
-ethereum-cryptography@^2.0.0:
+ethereum-bloom-filters@^1.0.6:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/ethereum-bloom-filters/-/ethereum-bloom-filters-1.2.0.tgz#8294f074c1a6cbd32c39d2cc77ce86ff14797dab"
+  integrity sha512-28hyiE7HVsWubqhpVLVmZXFd4ITeHi+BUu05o9isf0GUpMtzBUi+8/gFrGaGYzvGAJQmJ3JKj77Mk9G98T84rA==
+  dependencies:
+    "@noble/hashes" "^1.4.0"
+
+ethereum-cryptography@^2.0.0, ethereum-cryptography@^2.1.2:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/ethereum-cryptography/-/ethereum-cryptography-2.2.1.tgz#58f2810f8e020aecb97de8c8c76147600b0b8ccf"
   integrity sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==
@@ -6155,6 +6306,14 @@ ethers@^6.13.4:
     aes-js "4.0.0-beta.5"
     tslib "2.7.0"
     ws "8.17.1"
+
+ethjs-unit@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/ethjs-unit/-/ethjs-unit-0.1.6.tgz#c665921e476e87bce2a9d588a6fe0405b2c41699"
+  integrity sha512-/Sn9Y0oKl0uqQuvgFk/zQgR7aw1g36qX/jzSQ5lSwlO0GigPymk4eGQfeNTD03w1dPOqfz8V77Cy43jH56pagw==
+  dependencies:
+    bn.js "4.11.6"
+    number-to-bn "1.7.0"
 
 event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   version "5.0.1"
@@ -6893,6 +7052,11 @@ is-glob@^4.0.1, is-glob@^4.0.3, is-glob@~4.0.1:
   dependencies:
     is-extglob "^2.1.1"
 
+is-hex-prefixed@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-hex-prefixed/-/is-hex-prefixed-1.0.0.tgz#7d8d37e6ad77e5d127148913c573e082d777f554"
+  integrity sha512-WvtOiug1VFrE9v1Cydwm+FnXd3+w9GaeVUss5W4v/SLy3UW00vP+6iNF2SdnfiBoLy4bTqVdkftNGTUeOFVsbA==
+
 is-inside-container@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-inside-container/-/is-inside-container-1.0.0.tgz#e81fba699662eb31dbdaf26766a61d4814717ea4"
@@ -7507,6 +7671,17 @@ merge2@^1.3.0:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
+merkletreejs@^0.3.11:
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/merkletreejs/-/merkletreejs-0.3.11.tgz#e0de05c3ca1fd368de05a12cb8efb954ef6fc04f"
+  integrity sha512-LJKTl4iVNTndhL+3Uz/tfkjD0klIWsHlUzgtuNnNrsf7bAlXR30m+xYB7lHr5Z/l6e/yAIsr26Dabx6Buo4VGQ==
+  dependencies:
+    bignumber.js "^9.0.1"
+    buffer-reverse "^1.0.1"
+    crypto-js "^4.2.0"
+    treeify "^1.1.0"
+    web3-utils "^1.3.4"
+
 metro-babel-transformer@0.80.12:
   version "0.80.12"
   resolved "https://registry.yarnpkg.com/metro-babel-transformer/-/metro-babel-transformer-0.80.12.tgz#ad02ade921dd4ced27b26b18ff31eb60608e3f56"
@@ -8007,6 +8182,14 @@ nullthrows@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/nullthrows/-/nullthrows-1.1.1.tgz#7818258843856ae971eae4208ad7d7eb19a431b1"
   integrity sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==
+
+number-to-bn@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/number-to-bn/-/number-to-bn-1.7.0.tgz#bb3623592f7e5f9e0030b1977bd41a0c53fe1ea0"
+  integrity sha512-wsJ9gfSz1/s4ZsJN01lyonwuxA1tml6X1yBDnfpMglypcBRFZZkus26EdPSlqS5GJfYddVZa22p3VNb3z5m5Ig==
+  dependencies:
+    bn.js "4.11.6"
+    strip-hex-prefix "1.0.0"
 
 ob1@0.80.12:
   version "0.80.12"
@@ -8580,6 +8763,13 @@ radix3@^1.1.2:
   resolved "https://registry.yarnpkg.com/radix3/-/radix3-1.1.2.tgz#fd27d2af3896c6bf4bcdfab6427c69c2afc69ec0"
   integrity sha512-b484I/7b8rDEdSDKckSSBA8knMpcdsXudlE/LNL639wFoHKwLbEkQFZHWEYwDC0wa0FKUcCY+GAF73Z7wxNVFA==
 
+randombytes@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
+  integrity sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==
+  dependencies:
+    safe-buffer "^5.1.0"
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
@@ -9035,7 +9225,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@~5.2.0:
+safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
@@ -9457,16 +9647,7 @@ strict-uri-encode@^2.0.0:
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
   integrity sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==
 
-"string-width-cjs@npm:string-width@^4.2.0":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -9498,7 +9679,7 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -9511,13 +9692,6 @@ strip-ansi@^5.0.0, strip-ansi@^5.2.0:
   integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
   dependencies:
     ansi-regex "^4.1.0"
-
-strip-ansi@^6.0.0, strip-ansi@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
-  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
-  dependencies:
-    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.1.0"
@@ -9535,6 +9709,13 @@ strip-final-newline@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/strip-final-newline/-/strip-final-newline-3.0.0.tgz#52894c313fbff318835280aed60ff71ebf12b8fd"
   integrity sha512-dOESqjYr96iWYylGObzd39EuNTa5VJxyvVAEm5Jnh7KGo75V43Hk1odPQkNDyXNmUR6k+gEiDVXnjB8HJ3crXw==
+
+strip-hex-prefix@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/strip-hex-prefix/-/strip-hex-prefix-1.0.0.tgz#0c5f155fef1151373377de9dbb588da05500e36f"
+  integrity sha512-q8d4ue7JGEiVcypji1bALTos+0pWtyGlivAWyPuTkHzuTCJqrK9sWxYQZUq6Nq3cuyv3bm734IhHvHtGGURU6A==
+  dependencies:
+    is-hex-prefixed "1.0.0"
 
 strip-indent@^3.0.0:
   version "3.0.0"
@@ -9740,6 +9921,11 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
+treeify@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/treeify/-/treeify-1.1.0.tgz#4e31c6a463accd0943879f30667c4fdaff411bb8"
+  integrity sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==
+
 ts-interface-checker@^0.1.9:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz#784fd3d679722bc103b1b4b8030bcddb5db2a699"
@@ -9942,6 +10128,11 @@ utf-8-validate@^5.0.2:
   integrity sha512-Z6czzLq4u8fPOyx7TU6X3dvUZVvoJmxSQ+IcrlmagKhilxlhZgxPK6C5Jqbkw1IDUmFTM+cz9QDnnLTwDz/2gQ==
   dependencies:
     node-gyp-build "^4.3.0"
+
+utf8@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
+  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
@@ -10233,6 +10424,20 @@ web3-types@^1.10.0, web3-types@^1.3.0, web3-types@^1.6.0, web3-types@^1.7.0, web
   resolved "https://registry.yarnpkg.com/web3-types/-/web3-types-1.10.0.tgz#41b0b4d2dd75e919d5b6f37bf139e29f445db04e"
   integrity sha512-0IXoaAFtFc8Yin7cCdQfB9ZmjafrbP6BO0f0KT/khMhXKUpoJ6yShrVhiNpyRBo8QQjuOagsWzwSK2H49I7sbw==
 
+web3-utils@^1.3.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/web3-utils/-/web3-utils-1.10.4.tgz#0daee7d6841641655d8b3726baf33b08eda1cbec"
+  integrity sha512-tsu8FiKJLk2PzhDl9fXbGUWTkkVXYhtTA+SmEFkKft+9BgwLxfCRpU96sWv7ICC8zixBNd3JURVoiR3dUXgP8A==
+  dependencies:
+    "@ethereumjs/util" "^8.1.0"
+    bn.js "^5.2.1"
+    ethereum-bloom-filters "^1.0.6"
+    ethereum-cryptography "^2.1.2"
+    ethjs-unit "0.1.6"
+    number-to-bn "1.7.0"
+    randombytes "^2.1.0"
+    utf8 "3.0.0"
+
 web3-utils@^4.0.7, web3-utils@^4.3.0, web3-utils@^4.3.1, web3-utils@^4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/web3-utils/-/web3-utils-4.3.3.tgz#e380a1c03a050d3704f94bd08c1c9f50a1487205"
@@ -10358,7 +10563,7 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -10371,15 +10576,6 @@ wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
-  dependencies:
-    ansi-styles "^4.0.0"
-    string-width "^4.1.0"
-    strip-ansi "^6.0.0"
-
-wrap-ansi@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
-  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"

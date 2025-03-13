@@ -6,7 +6,6 @@ import {
 } from "@dynamic-labs/sdk-react-core";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-
 const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -31,7 +30,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <DynamicContextProvider
       settings={{
-        environmentId: "1cc03587-8f17-4f55-9cd2-56b25b47e120",
+        environmentId: "fed025b3-670e-4fe5-be71-a2ad2d509b70",
         walletConnectors: [EthereumWalletConnectors],
         overrides: {
           evmNetworks: (networks) => mergeNetworks(evmNetworks, networks),
