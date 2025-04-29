@@ -7,71 +7,37 @@ import WalletCard from "@/components/WalletCard";
 import FeatureCards from "../components/FeatureCards";
 import ActivityLog from "../components/ActivityLog";
 import {
-  createKernelAccountClient,
-  getUserOperationGasPrice,
-  createZeroDevPaymasterClient,
-  getERC20PaymasterApproveCall,
-} from "@zerodev/sdk";
-import { getEntryPoint, KERNEL_V3_1 } from "@zerodev/sdk/constants";
-import {
   encodeFunctionData,
   parseEther,
   formatUnits,
-  zeroAddress,
   createPublicClient,
 } from "viem";
 import { http } from "wagmi";
-import UserProfile from "@/components/UserProfile";
-import { Contract, JsonRpcProvider } from "ethers";
-import { EmptyState } from "@/components/EmptyState";
+import { JsonRpcProvider } from "ethers";
 import { chainConfig, TOKEN_CONFIG, tokenDetails } from "./blockchain/config";
 import { Toaster, toast } from "sonner";
-import { useDynamicContext, DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { GasEstimationModal } from "@/components/GasEstimationModal";
 import { useTokenHoldings } from "@/lib/useFetchBalances";
 import { Address, Log } from "viem";
-import { isZeroDevConnector } from "@dynamic-labs/ethereum-aa";
-import { useQuery } from "@tanstack/react-query";
 import { TransactionModal } from "@/components/TransactionModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { DynamicConnectButton } from "@dynamic-labs/sdk-react-core";
 import Image from "next/image";
+import { createMegaClient, erc20, sponsored } from "@gelatomega/core";
+import {
+  useGelatoMegaProviderContext,
+  GelatoMegaConnectButton,
+} from "@gelatomega/react-sdk";
 
 interface HomeProps {}
-
-// Gas configuration for Gelato Bundler
-type GasPrices = {
-  maxFeePerGas: string;
-  maxPriorityFeePerGas: string;
-};
-
-type EthGetUserOperationGasPriceRpc = {
-  ReturnType: GasPrices;
-  Parameters: [];
-};
 
 let CHAIN = chainConfig;
 const GELATO_API_KEY = process.env.NEXT_PUBLIC_GELATO_API_KEY!;
 
 const provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL);
 
-// Create a memoized deployment check function
-const checkIsDeployed = async (address: string) => {
-  try {
-    const code = await provider.getCode(address);
-    return code !== "0x";
-  } catch (error) {
-    console.error("Error checking deployment status:", error);
-    return false;
-  }
-};
-
 export default function Home({}: HomeProps) {
   const [accountAddress, setAccountAddress] = useState("");
-  const [isKernelClientReady, setIsKernelClientReady] = useState(false);
-  const [userOpHash, setUserOpHash] = useState("");
-  const [kernelAccount, setKernelAccount] = useState<any>(null);
-  const [kernelClient, setKernelClient] = useState<any>(null);
+  const [megaClient, setMegaClient] = useState<any>(null);
   const [logs, setLogs] = useState<
     {
       message: string | JSX.Element;
@@ -88,7 +54,6 @@ export default function Home({}: HomeProps) {
       };
     }[]
   >([]);
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [gasPaymentMethod, setGasPaymentMethod] = useState<
     "sponsored" | "erc20"
   >("sponsored");
@@ -96,16 +61,12 @@ export default function Home({}: HomeProps) {
 
   const [user, setUser] = useState<any>(null);
   const [open, setOpen] = useState<boolean>(false);
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
   const [loadingTokens, setLoadingTokens] = useState<boolean>(false);
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
   const [showGasEstimation, setShowGasEstimation] = useState(false);
-  const [pendingAction, setPendingAction] = useState<"drop" | null>(null);
   const [tokenBalance, setTokenBalance] = useState<any>("0");
-  const [isCopied, setIsCopied] = useState(false);
   const [isTransactionProcessing, setIsTransactionProcessing] = useState(false);
   const [showTokenSelection, setShowTokenSelection] = useState(false);
-  const [estimatedGas, setEstimatedGas] = useState<string>("");
 
   const [transactionDetails, setTransactionDetails] = useState<{
     isOpen: boolean;
@@ -123,109 +84,24 @@ export default function Home({}: HomeProps) {
   });
 
   // 7702 configuration
-  const { primaryWallet, handleLogOut } = useDynamicContext();
-  const connector: any = primaryWallet?.connector;
-  const params = {
-    withSponsorship: true,
-  };
-  let client: any;
-  if (isZeroDevConnector(connector)) {
-    client = connector?.getAccountAbstractionProvider(params);
-  }
-
+  const { walletClient, logout } = useGelatoMegaProviderContext();
   const { data: tokenHoldings, refetch: refetchTokenHoldings } =
     useTokenHoldings(accountAddress as Address, gasToken);
-  // Use React Query for deployment status
-  const { data: isDeployed } = useQuery({
-    queryKey: ["isDeployed", accountAddress],
-    queryFn: () => checkIsDeployed(accountAddress),
-    enabled: !!accountAddress,
-    staleTime: 1000 * 60 * 5, // Consider data fresh for 5 minutes
-    gcTime: 1000 * 60 * 30, // Keep in cache for 30 minutes
-  });
 
-  const createSponsoredKernelClient = async () => {
-    const kernelClient = createKernelAccountClient({
-      account: client.account,
-      chain: CHAIN,
-      bundlerTransport: http(
-        `https://api.gelato.digital/bundlers/${CHAIN.id}/rpc?sponsorApiKey=${GELATO_API_KEY}`
-      ),
-      userOperation: {
-        estimateFeesPerGas: async ({ bundlerClient }) => {
-          return getUserOperationGasPrice(bundlerClient);
-        },
-      },
-    });
-
-    setUser(kernelClient.account.address);
-    setKernelAccount(kernelClient.account);
-    setAccountAddress(kernelClient.account.address);
-    checkIsDeployed(kernelClient.account.address);
-    setKernelClient(kernelClient);
-    setIsKernelClientReady(true);
-    return kernelClient;
+  const createClient = async () => {
+    const megaClient = createMegaClient(walletClient as any);
+    setUser(walletClient?.account.address);
+    setAccountAddress(walletClient?.account.address as string);
+    setMegaClient(walletClient);
+    return megaClient;
   };
 
-  const createERC20KernelClient = async (gasToken: "USDC" | "WETH") => {
-    const gasTokenAddress = TOKEN_CONFIG[gasToken].address;
-
-    // Create a ZeroDev Paymaster client for gas sponsorship
-    const paymasterClient: any = createZeroDevPaymasterClient({
-      chain: CHAIN,
-      transport: http(TOKEN_CONFIG[gasToken].paymasterUrl),
-    });
-    // Initialize the Kernel Smart Account Client with bundler and erc20 paymaster support
-    const kernelClient: any = createKernelAccountClient({
-      account: client.account,
-      chain: CHAIN,
-      bundlerTransport: http(
-        `https://api.gelato.digital/bundlers/${CHAIN.id}/rpc`
-      ),
-      paymaster: paymasterClient,
-      paymasterContext: {
-        token: gasTokenAddress,
-      },
-      userOperation: {
-        // Function to estimate gas fees dynamically from the bundler
-        estimateFeesPerGas: async ({ bundlerClient }) => {
-          const gasPrices =
-            await bundlerClient.request<EthGetUserOperationGasPriceRpc>({
-              method: "eth_getUserOperationGasPrice",
-              params: [],
-            });
-
-          return {
-            maxFeePerGas: BigInt(gasPrices.maxFeePerGas),
-            maxPriorityFeePerGas: BigInt(gasPrices.maxPriorityFeePerGas),
-          };
-        },
-      },
-    });
-    setUser(kernelClient.account.address);
-    setKernelAccount(kernelClient.account);
-    setAccountAddress(kernelClient.account.address);
-    checkIsDeployed(kernelClient.account.address);
-    setKernelClient(kernelClient);
-    setIsKernelClientReady(true);
-    return kernelClient;
-  };
-
-  // Utility function for human readable datetime
-  const humanReadableDateTime = (): string => {
-    return new Date()
-      .toLocaleString()
-      .replaceAll("/", "-")
-      .replaceAll(":", ".");
-  };
-
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      handleLogOut();
+      logout();
       setUser(null);
       setAccountAddress("");
       setOpen(false);
-      setShowSuccessModal(false);
     } catch (error) {
       console.error(error);
       toast.error("Logout failed. Please try again.");
@@ -258,41 +134,16 @@ export default function Home({}: HomeProps) {
     []
   );
 
-  const addTaskStatusLog = useCallback(
-    (userOpHash: string) => {
-      const taskStatusUrl = `https://relay.gelato.digital/tasks/status/${userOpHash}`;
-      addLog(
-        <span>
-          View UserOp status:{" "}
-          <a
-            href={taskStatusUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-400 underline"
-          >
-            {taskStatusUrl}
-          </a>
-        </span>
-      );
-    },
-    [addLog]
-  );
-
-  const createKernelClient = async (method: "sponsored" | "erc20") => {
-    if (method === "sponsored") {
-      return createSponsoredKernelClient();
-    } else {
-      return createERC20KernelClient(gasToken);
-    }
-  };
-
   const getActualFees = async (
     txHash: string,
     gasTokenAddress: string,
     gasToken: "USDC" | "WETH"
   ) => {
     try {
-      const publicClient = await (primaryWallet as any).getPublicClient();
+      const publicClient = createPublicClient({
+        chain: CHAIN,
+        transport: http(),
+      });
       const receipt = await publicClient.getTransactionReceipt({
         hash: txHash as `0x${string}`,
       });
@@ -329,110 +180,8 @@ export default function Home({}: HomeProps) {
     setLoadingTokens(true);
     setIsTransactionProcessing(true);
     try {
-      if (!kernelClient) {
-        throw new Error("Kernel client not initialized");
-      }
+      const megaClient = await createClient();
 
-      let data = encodeFunctionData({
-        abi: tokenDetails.abi,
-        functionName: pendingAction === "drop" ? "drop" : "stake",
-        args: [],
-      });
-
-      const calls = [
-        await getERC20PaymasterApproveCall(kernelClient.paymaster, {
-          gasToken: TOKEN_CONFIG[gasToken].address as `0x${string}`,
-          approveAmount: parseEther("1"),
-          entryPoint: getEntryPoint("0.7"),
-        }),
-        {
-          to: tokenDetails.address as `0x${string}`,
-          value: BigInt(0),
-          data,
-        },
-      ];
-
-      const userOpHash = await kernelClient.sendUserOperation({
-        callData: await kernelClient.account.encodeCalls(calls),
-      });
-      // Add initial log with estimated gas
-      addLog(
-        `Sending userOp through Gelato Bundler - paying gas with ${gasToken}`,
-        {
-          userOpHash,
-          gasDetails: {
-            estimatedGas,
-            gasToken,
-          },
-          isSponsored: false,
-        }
-      );
-
-      const receipt = await kernelClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
-      const txHash = receipt.receipt.transactionHash;
-
-      // Get actual gas fees
-      const actualGas = await getActualFees(
-        txHash,
-        TOKEN_CONFIG[gasToken].address,
-        gasToken
-      );
-
-      // Add completion log with all details
-      addLog("Minted drop tokens on chain successfully", {
-        userOpHash,
-        txHash,
-        gasDetails: {
-          estimatedGas,
-          actualGas,
-          gasToken,
-        },
-        isSponsored: false,
-      });
-
-      toast.success(
-        `${
-          pendingAction === "drop" ? "Tokens claimed" : "Tokens staked"
-        } successfully!`
-      );
-
-      // Refresh token holdings after successful transaction
-      if (accountAddress) {
-        refetchTokenHoldings();
-      }
-    } catch (error: any) {
-      addLog(
-        `Error ${pendingAction === "drop" ? "claiming" : "staking"} tokens: ${
-          typeof error === "string"
-            ? error
-            : error?.message || "Unknown error occurred"
-        }`
-      );
-      toast.error(
-        `Error ${
-          pendingAction === "drop" ? "claiming" : "staking"
-        } token. Check the logs`
-      );
-    } finally {
-      setLoadingTokens(false);
-      setIsTransactionProcessing(false);
-      setPendingAction(null);
-    }
-  };
-
-  const dropToken = async () => {
-    if (gasPaymentMethod === "erc20") {
-      setPendingAction("drop");
-      setShowGasEstimation(true);
-      return;
-    }
-
-    setLoadingTokens(true);
-    setIsTransactionProcessing(true);
-    try {
-      const kernelClient = await createKernelClient(gasPaymentMethod);
       let data = encodeFunctionData({
         abi: tokenDetails.abi,
         functionName: "drop",
@@ -446,12 +195,94 @@ export default function Home({}: HomeProps) {
           data,
         },
       ];
-      const userOpHash = await kernelClient.sendUserOperation({
-        callData: await kernelClient.account.encodeCalls(calls),
-        maxFeePerGas: BigInt(0),
-        maxPriorityFeePerGas: BigInt(0),
+
+      const userOpHash = await megaClient.execute({
+        payment: erc20(TOKEN_CONFIG[gasToken].address as `0x${string}`),
+        calls,
       });
 
+      // Add initial log with estimated gas
+      addLog(
+        `Sending userOp through Gelato Bundler - paying gas with ${gasToken}`,
+        {
+          userOpHash,
+          gasDetails: {
+            estimatedGas,
+            gasToken,
+          },
+          isSponsored: false,
+        }
+      );
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+
+      const response = await getTaskStatus(userOpHash);
+      const txHash = response.task.transactionHash;
+
+      console.log(txHash);
+
+      // Add completion log with all details
+      addLog("Minted drop tokens on chain successfully", {
+        userOpHash,
+        txHash,
+        gasDetails: {
+          estimatedGas,
+          gasToken,
+        },
+        isSponsored: false,
+      });
+
+      toast.success(`Tokens claimed successfully!`);
+
+      // Refresh token holdings after successful transaction
+      if (accountAddress) {
+        refetchTokenHoldings();
+      }
+    } catch (error: any) {
+      addLog(
+        `Error claiming tokens: ${
+          typeof error === "string"
+            ? error
+            : error?.message || "Unknown error occurred"
+        }`
+      );
+      toast.error(`Error claiming token. Check the logs`);
+      console.log(error);
+    } finally {
+      setLoadingTokens(false);
+      setIsTransactionProcessing(false);
+    }
+  };
+
+  const dropToken = async () => {
+    if (gasPaymentMethod === "erc20") {
+      setShowGasEstimation(true);
+      return;
+    }
+
+    setLoadingTokens(true);
+    setIsTransactionProcessing(true);
+    try {
+      const megaClient = await createClient();
+      let data = encodeFunctionData({
+        abi: tokenDetails.abi,
+        functionName: "drop",
+        args: [],
+      });
+
+      const calls = [
+        {
+          to: tokenDetails.address as `0x${string}`,
+          value: BigInt(0),
+          data,
+        },
+      ];
+
+      const userOpHash = await megaClient.execute({
+        payment: sponsored(GELATO_API_KEY),
+        calls,
+      });
+
+      console.log(userOpHash);
       addLog(
         gasPaymentMethod === "sponsored"
           ? "Sending userOp through Gelato Bundler - Sponsored"
@@ -462,23 +293,12 @@ export default function Home({}: HomeProps) {
         }
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 4000));
 
-      const txHash = await Promise.race([
-        // First promise: Get hash from task status
-        getTaskStatus(userOpHash).then((taskStatus) => {
-          return taskStatus.task.transactionHash;
-        }),
-        // Second promise: Get hash from kernel client
-        kernelClient
-          .waitForUserOperationReceipt({
-            hash: userOpHash,
-          })
-          .then((receipt: { receipt: { transactionHash: string } }) => {
-            return receipt.receipt.transactionHash;
-          }),
-      ]);
+      const response = await getTaskStatus(userOpHash);
+      const txHash = response.task.transactionHash;
 
+      console.log(txHash);
       // Add success log
       addLog("Minted drop tokens on chain successfully", {
         userOpHash,
@@ -508,37 +328,28 @@ export default function Home({}: HomeProps) {
     }
   };
   async function getTaskStatus(userOpHash: string) {
-    const url = `https://relay.gelato.digital/tasks/status/${userOpHash}`;
+    const url = `https://relay.dev.gelato.digital/tasks/status/${userOpHash}`;
     const response = await fetch(url);
     return response.json();
   }
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(accountAddress);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
-  }, [accountAddress]);
 
   useEffect(() => {
     async function createAccount() {
-      if (client) {
+      if (walletClient) {
         try {
-          const kernelClient = await createKernelClient(gasPaymentMethod);
-          // setUser(primaryWallet.address);
+          setIsInitializing(true);
+          const megaClient = await createClient();
         } catch (error) {
-          console.error("Failed to create kernel client:", error);
+          console.error("Failed to create mega client:", error);
           toast.error("Failed to initialize wallet");
+          setIsInitializing(false);
         } finally {
           setIsInitializing(false);
         }
       }
     }
     createAccount();
-  }, [client, gasPaymentMethod, gasToken]);
-  useEffect(() => {
-    if (primaryWallet) {
-      setIsInitializing(true);
-    }
-  }, [primaryWallet]);
+  }, [walletClient]);
 
   useEffect(() => {
     if (tokenHoldings) {
@@ -589,7 +400,6 @@ export default function Home({}: HomeProps) {
 
         <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Header />
-
           <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-1 space-y-4">
               <FeatureCards />
@@ -603,11 +413,11 @@ export default function Home({}: HomeProps) {
               ) : !user ? (
                 <div className="w-full flex flex-col p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
                   <div className="flex flex-col items-center justify-center">
-                    <DynamicConnectButton>
+                    <GelatoMegaConnectButton>
                       <div className="w-32 py-3 bg-zinc-800 rounded-md hover:bg-zinc-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative text-center text-sm text-white">
                         Login
                       </div>
-                    </DynamicConnectButton>
+                    </GelatoMegaConnectButton>
                   </div>
                 </div>
               ) : (
@@ -618,7 +428,7 @@ export default function Home({}: HomeProps) {
                       <WalletCard
                         accountAddress={accountAddress}
                         gasToken={gasToken}
-                        handleLogout={logout}
+                        handleLogout={handleLogout}
                       />
 
                       <div className="w-full flex flex-col p-4 bg-[#202020] border rounded-[12px] border-[#2A2A2A]">
@@ -718,26 +528,11 @@ export default function Home({}: HomeProps) {
                           ) : (
                             <div className="space-y-4">
                               <button
-                                onClick={async () => {
+                                onClick={() => {
                                   setGasToken("USDC");
                                   setGasPaymentMethod("erc20");
-                                  setPendingAction("drop");
-                                  try {
-                                    // Create a new kernel client with USDC configuration
-                                    const kernelClient =
-                                      await createERC20KernelClient("USDC");
-                                    setKernelClient(kernelClient);
-                                    setShowGasEstimation(true);
-                                    setShowTokenSelection(false);
-                                  } catch (error) {
-                                    console.error(
-                                      "Error creating USDC kernel client:",
-                                      error
-                                    );
-                                    toast.error(
-                                      "Failed to initialize USDC kernel client"
-                                    );
-                                  }
+                                  setShowGasEstimation(true);
+                                  setShowTokenSelection(false);
                                 }}
                                 disabled={
                                   loadingTokens || isTransactionProcessing
@@ -766,26 +561,11 @@ export default function Home({}: HomeProps) {
                                 )}
                               </button>
                               <button
-                                onClick={async () => {
+                                onClick={() => {
                                   setGasToken("WETH");
                                   setGasPaymentMethod("erc20");
-                                  setPendingAction("drop");
-                                  try {
-                                    // Create a new kernel client with WETH configuration
-                                    const kernelClient =
-                                      await createERC20KernelClient("WETH");
-                                    setKernelClient(kernelClient);
-                                    setShowGasEstimation(true);
-                                    setShowTokenSelection(false);
-                                  } catch (error) {
-                                    console.error(
-                                      "Error creating WETH kernel client:",
-                                      error
-                                    );
-                                    toast.error(
-                                      "Failed to initialize WETH kernel client"
-                                    );
-                                  }
+                                  setShowGasEstimation(true);
+                                  setShowTokenSelection(false);
                                 }}
                                 disabled={
                                   loadingTokens || isTransactionProcessing
@@ -816,7 +596,6 @@ export default function Home({}: HomeProps) {
                               <button
                                 onClick={() => {
                                   setShowTokenSelection(false);
-                                  // Refresh token holdings when canceling token selection
                                   if (accountAddress) {
                                     refetchTokenHoldings();
                                   }
@@ -888,10 +667,9 @@ export default function Home({}: HomeProps) {
             setGasPaymentMethod("sponsored");
           }}
           onConfirm={handleGasEstimationConfirm}
-          kernelClient={kernelClient}
+          megaClient={megaClient}
           gasToken={gasToken}
           tokenBalance={tokenBalance}
-          pendingAction={pendingAction!}
         />
 
         <TransactionModal

@@ -214,7 +214,7 @@ export default function WalletCard({
             </div>
           </div>
 
-          <div className="flex items-center justify-between py-2">
+          <div className="flex items-center justify-between py-2 border-b border-dark-200">
             <div className="flex items-center">
               <div className="w-6 h-6 mr-2">
                 <Image

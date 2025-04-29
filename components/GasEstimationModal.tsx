@@ -9,36 +9,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { parseEther, formatUnits, http } from "viem";
-import {
-  createZeroDevPaymasterClient,
-  getERC20PaymasterApproveCall,
-} from "@zerodev/sdk";
-import { getEntryPoint } from "@zerodev/sdk/constants";
-import { zeroAddress } from "viem";
 import { TOKEN_CONFIG, chainConfig } from "@/app/blockchain/config";
-import { tokenDetails } from "@/app/blockchain/config";
-import { encodeFunctionData } from "viem";
 import { ExternalLink } from "lucide-react";
-import { entryPoint07Address } from "viem/account-abstraction";
+import { getEstimatedFee } from "@gelatomega/core/oracle";
 
 interface GasEstimationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (estimatedGas: string) => void;
-  kernelClient: any;
+  megaClient: any;
   gasToken: "USDC" | "WETH";
   tokenBalance: string;
-  pendingAction: "drop";
 }
 
 export function GasEstimationModal({
   isOpen,
   onClose,
   onConfirm,
-  kernelClient,
+  megaClient,
   gasToken,
   tokenBalance,
-  pendingAction,
 }: GasEstimationModalProps) {
   const [estimatedGas, setEstimatedGas] = useState<string>("");
   const [isEstimating, setIsEstimating] = useState(false);
@@ -67,45 +57,17 @@ export function GasEstimationModal({
     try {
       setIsEstimating(true);
       const gasTokenAddress = TOKEN_CONFIG[gasToken].address;
-      const entryPoint = getEntryPoint("0.7");
-
-      // Encode the actual transaction data
-      const data = encodeFunctionData({
-        abi: tokenDetails.abi,
-        functionName: "drop",
-        args: [],
-      });
-
-      // Encode transaction calls for gas estimation
-      const callData = await kernelClient.account.encodeCalls([
-        // Approve the paymaster to spend gas tokens
-        await getERC20PaymasterApproveCall(kernelClient.paymaster, {
-          gasToken: gasTokenAddress as `0x${string}`,
-          approveAmount: parseEther("1"),
-          entryPoint,
-        }),
-        {
-          to: tokenDetails.address as `0x${string}`,
-          value: BigInt(0),
-          data,
-        },
-      ]);
-
-      // Prepare the user operation with the encoded transaction calls
-      const userOp = await kernelClient.prepareUserOperation({ callData });
-
-      // Estimate the gas cost in ERC20 tokens using the paymaster client
-      const result = await kernelClient.paymaster.estimateGasInERC20({
-        userOperation: userOp,
-        gasTokenAddress: gasTokenAddress,
-        entryPoint: entryPoint07Address,
-      });
-
+      const estimatedFee = await getEstimatedFee(
+        megaClient.chain.id,
+        gasTokenAddress,
+        // TODO: dynamic gas limit
+        BigInt(200000),
+        BigInt(0)
+      );
       setEstimatedGas(
-        `${formatBalance(
-          result.amount.toString(),
-          TOKEN_CONFIG[gasToken].decimals
-        )} ${TOKEN_CONFIG[gasToken].symbol} tokens`
+        `${formatBalance(estimatedFee.toString(), 18)} ${
+          TOKEN_CONFIG[gasToken].symbol
+        }`
       );
     } catch (error) {
       console.error("Error estimating gas:", error);
@@ -123,8 +85,8 @@ export function GasEstimationModal({
             Gas Fee Estimation
           </DialogTitle>
           <DialogDescription className="text-zinc-400">
-            This will estimate the gas fees for your {pendingAction} transaction
-            in {TOKEN_CONFIG[gasToken].symbol}
+            This will estimate the gas fees for your drop transaction in{" "}
+            {TOKEN_CONFIG[gasToken].symbol}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -170,7 +132,7 @@ export function GasEstimationModal({
                     rel="noopener noreferrer"
                     className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
                   >
-                    Mint {TOKEN_CONFIG[gasToken].symbol} for your smart account
+                    Get {TOKEN_CONFIG[gasToken].symbol} for your smart account
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
