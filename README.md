@@ -1,5 +1,4 @@
-# Gelato <img src="./public/gelato-icon.svg" alt="Logo" width="24" align="center" />
-## EIP-7702 Next.js Demo
+# Gelato <img src="./public/gelato-icon.svg" alt="Logo" width="24" align="center" /> - ## EIP-7702 Next.js Demo
 
 <hr/>
 
