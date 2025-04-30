@@ -8,29 +8,21 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 31536000,
     domains: ["lh3.googleusercontent.com"],
   },
+  transpilePackages: [
+    "@gelatomega/core",
+    "@gelatomega/react-sdk",
+    "@gelatomega/react-types",
+    "@gelatomega/react-privy",
+    "@gelatomega/react-dynamic"
+  ],
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@gelatomega/core": path.resolve(
-        __dirname,
-        "../../packages/core/src/index.ts"
-      ),
-      "@gelatomega/react-dynamic": path.resolve(
-        __dirname,
-        "../../packages/react-dynamic/src/index.ts"
-      ),
-      "@gelatomega/react-privy": path.resolve(
-        __dirname,
-        "../../packages/react-privy/src/index.ts"
-      ),
-      "@gelatomega/react-sdk": path.resolve(
-        __dirname,
-        "../../packages/react-sdk/src/index.ts"
-      ),
-      "@gelatomega/core/oracle": path.resolve(
-        __dirname,
-        "../../packages/core/src/oracle/index.ts"
-      ),
+      "@gelatomega/core": path.resolve(__dirname, "./packages/core/src"),
+      "@gelatomega/react-dynamic": path.resolve(__dirname, "./packages/react-dynamic/src"),
+      "@gelatomega/react-privy": path.resolve(__dirname, "./packages/react-privy/src"),
+      "@gelatomega/react-sdk": path.resolve(__dirname, "./packages/react-sdk/src"),
+      "@gelatomega/react-types": path.resolve(__dirname, "./packages/react-types/src"),
     };
     return config;
   },

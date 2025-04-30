@@ -1,0 +1,27 @@
+{
+  "name": "@gelatomega/react-types",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Gelato",
+  "description": "Common react types",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "viem": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@wagmi/core": "^2.0.0",
+    "react": "^18.2.0",
+    "viem": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "@gelatomega/react-dynamic",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Gelato",
+  "type": "module",
+  "description": "Context provider supporting Dynamic WaaS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "viem": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@dynamic-labs/ethereum": "^4.12.4",
+    "@dynamic-labs/sdk-react-core": "^4.10.0",
+    "@dynamic-labs/wagmi-connector": "^4.12.4",
+    "@dynamic-labs/wallet-connector-core": "^4.12.4",
+    "@gelatomega/react-types": "workspace:*",
+    "@gelatomega/react-sdk": "workspace:*",
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "viem": "^2.0.0",
+    "wagmi": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}
