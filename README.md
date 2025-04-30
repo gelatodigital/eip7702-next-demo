@@ -1,48 +1,27 @@
-# EIP 7702 Integration with AA powered by Gelato
+# Gelato EIP-7702 Next.js Demo
 
-A Next.js application demonstrating the integration of EIP 7702 (Account Abstraction) using Gelato's infrastructure. This project showcases how to use EOAs as smart contract wallets with advanced features like gasless transactions and paying gas with ERC20 tokens.
+<hr/>
 
-## Features
+![Next.js](https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Wagmi](https://img.shields.io/badge/Wagmi-FFD700?style=for-the-badge&logo=ethereum&logoColor=black)
+![Gelato](https://img.shields.io/badge/Gelato-FF4A4A?style=for-the-badge&logo=gelato&logoColor=white)
+![Pnpm](https://img.shields.io/badge/pnpm-yellow?style=for-the-badge&logo=pnpm&logoColor=white)
 
-- Sponsored transactions using Gelato Bundler via 1Balance
-- Paying gas with ERC20 tokens (e.g., USDC, WETH) with accurate gas estimations
+A Next.js playground for exploring EIP-7702 gas sponsorship and account abstraction, powered by Gelato and Wagmi.
+
+---
 
 ## Prerequisites
 
-- Node.js 18.x or later
-- Yarn package manager
-- A Gelato API key
-- A Dynamic Environment ID
-- A ZeroDev project ID
-- An RPC URL for your target network (Sepolia)
+- Git
+- Node.js (v18 or higher)
+- pnpm
 
-## Installation
+## Environment Variables
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/gelatodigital/eip7702-next-demo.git
-cd eip7702-next-demo
-```
-
-2. Checkout to 7702 Branch:
-
-```bash
-git checkout gelato-7702
-```
-
-3. Install dependencies:
-
-```bash
-yarn install
-```
-
-4. Set up environment variables:
-
-   - Copy `.env.local.example` to `.env.local`
-   - Fill in the required environment variables
-
-Note:- Currently the demo is configured to ethereum sepolia
+Create a `.env` file in the root directory with the following variables:
 
 ```env
 NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID=your-dynamic-environment-id
@@ -51,32 +30,87 @@ NEXT_PUBLIC_GELATO_API_KEY="your-gelato-api-key"
 NEXT_PUBLIC_RPC_URL="your-rpc-url"
 ```
 
-## Development
+---
 
-Run the development server:
+## Getting Started
 
-```bash
-yarn run dev
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-org/eip7702-next-demo.git
+   cd eip7702-next-demo
+   ```
+
+2. **Install dependencies:**
+   ```sh
+   pnpm install
+   ```
+
+3. **Set up your environment variables** as described above.
+
+4. **Start the development server:**
+   ```sh
+   pnpm dev
+   ```
+
+The application will be available at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Building for Production
+
+```sh
+pnpm build
 ```
 
-The application will be available at `http://localhost:3000`
+To start the production server:
+```sh
+pnpm start
+```
+
+---
 
 ## Project Structure
 
-```
-├── app/                    # Next.js app directory
-│   ├── providers.tsx       # Web3 providers configuration
-│   └── page.tsx           # Main application page
-├── components/            # React components
-├── lib/                   # Utility functions and configurations
-├── public/               # Static assets
-```
+- `/app` - Next.js app router, layouts, and pages
+- `/components` - Reusable UI and feature components
+- `/lib` - Utility functions and custom hooks
+- `/public` - Static assets (images, SVGs, etc.)
+- `/constants` - (Recommended) Project-wide constants (add as needed)
+- `/providers` - (Recommended) React context and global providers (add as needed)
 
-## Key Dependencies
+---
 
-- `@dynamic-labs/sdk-react-core`: Core Dynamic SDK for Web3 authentication
-- `@dynamic-labs/ethereum-aa`: Account Abstraction integration
-- `@dynamic-labs/ethereum`: Ethereum wallet connectors
-- `@zerodev/sdk`: ZeroDev smart contract wallet SDK
-- `viem` v2.23.9: Modern Ethereum library
-- `ethers`: Ethereum library
+## Features
+
+- ⚡ Explore EIP-7702 gas sponsorship and account abstraction
+- 🔗 Connect and manage Ethereum wallets
+- 🧮 Gas estimation and transaction modals
+- 📜 Activity log for blockchain actions
+- 🎨 Responsive, modern UI with TailwindCSS
+- 🦄 Powered by Gelato and Wagmi
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## Acknowledgements
+
+- [Next.js](https://nextjs.org/)
+- [Gelato Network](https://www.gelato.network/)
+- [Wagmi](https://wagmi.sh/)
+- [Ethers.js](https://docs.ethers.org/)
+- [TailwindCSS](https://tailwindcss.com/)

@@ -1,39 +1,29 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import Header from "../components/Header";
 import WalletCard from "@/components/WalletCard";
 import FeatureCards from "../components/FeatureCards";
 import ActivityLog from "../components/ActivityLog";
-import {
-  encodeFunctionData,
-  parseEther,
-  formatUnits,
-  createPublicClient,
-} from "viem";
-import { http } from "wagmi";
-import { JsonRpcProvider } from "ethers";
-import { chainConfig, TOKEN_CONFIG, tokenDetails } from "./blockchain/config";
+import { encodeFunctionData } from "viem";
 import { Toaster, toast } from "sonner";
 import { GasEstimationModal } from "@/components/GasEstimationModal";
-import { useTokenHoldings } from "@/lib/useFetchBalances";
+import { useTokenHoldings } from "@/lib/hooks/useFetchBalances";
 import { Address, Log } from "viem";
 import { TransactionModal } from "@/components/TransactionModal";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Image from "next/image";
 import { createMegaClient, erc20, sponsored } from "@gelatomega/core";
 import {
   useGelatoMegaProviderContext,
   GelatoMegaConnectButton,
 } from "@gelatomega/react-sdk";
+import { TOKEN_CONFIG, TOKEN_DETAILS } from "@/constants/blockchain";
 
 interface HomeProps {}
 
-let CHAIN = chainConfig;
 const GELATO_API_KEY = process.env.NEXT_PUBLIC_GELATO_API_KEY!;
-
-const provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL);
 
 export default function Home({}: HomeProps) {
   const [accountAddress, setAccountAddress] = useState("");
@@ -60,7 +50,6 @@ export default function Home({}: HomeProps) {
   const [gasToken, setGasToken] = useState<"USDC" | "WETH">("USDC");
 
   const [user, setUser] = useState<any>(null);
-  const [open, setOpen] = useState<boolean>(false);
   const [loadingTokens, setLoadingTokens] = useState<boolean>(false);
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
   const [showGasEstimation, setShowGasEstimation] = useState(false);
@@ -101,7 +90,6 @@ export default function Home({}: HomeProps) {
       logout();
       setUser(null);
       setAccountAddress("");
-      setOpen(false);
     } catch (error) {
       console.error(error);
       toast.error("Logout failed. Please try again.");
@@ -134,47 +122,6 @@ export default function Home({}: HomeProps) {
     []
   );
 
-  const getActualFees = async (
-    txHash: string,
-    gasTokenAddress: string,
-    gasToken: "USDC" | "WETH"
-  ) => {
-    try {
-      const publicClient = createPublicClient({
-        chain: CHAIN,
-        transport: http(),
-      });
-      const receipt = await publicClient.getTransactionReceipt({
-        hash: txHash as `0x${string}`,
-      });
-
-      // Find Transfer event from the gas token to the paymaster
-      const transferEvents = receipt.logs.filter((log: Log) => {
-        // Check if this is a Transfer event from the gas token contract
-        return (
-          log.address.toLowerCase() === gasTokenAddress.toLowerCase() &&
-          log.topics[0] ===
-            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-        ); // Transfer event signature
-      });
-
-      if (transferEvents.length > 0) {
-        // Get the last transfer event which should be the fee payment
-        const lastTransferEvent = transferEvents[transferEvents.length - 1];
-        const amount = BigInt(lastTransferEvent.data);
-        const formattedAmount = formatUnits(
-          amount,
-          TOKEN_CONFIG[gasToken].decimals
-        );
-        return `${formattedAmount} ${TOKEN_CONFIG[gasToken].symbol}`;
-      }
-      return "Fee information not available";
-    } catch (error) {
-      console.error("Error getting actual fees:", error);
-      return "Error fetching fee information";
-    }
-  };
-
   const handleGasEstimationConfirm = async (estimatedGas: string) => {
     setShowGasEstimation(false);
     setLoadingTokens(true);
@@ -183,14 +130,14 @@ export default function Home({}: HomeProps) {
       const megaClient = await createClient();
 
       let data = encodeFunctionData({
-        abi: tokenDetails.abi,
+        abi: TOKEN_DETAILS.abi,
         functionName: "drop",
         args: [],
       });
 
       const calls = [
         {
-          to: tokenDetails.address as `0x${string}`,
+          to: TOKEN_DETAILS.address as `0x${string}`,
           value: BigInt(0),
           data,
         },
@@ -217,8 +164,6 @@ export default function Home({}: HomeProps) {
 
       const response = await getTaskStatus(userOpHash);
       const txHash = response.task.transactionHash;
-
-      console.log(txHash);
 
       // Add completion log with all details
       addLog("Minted drop tokens on chain successfully", {
@@ -264,14 +209,14 @@ export default function Home({}: HomeProps) {
     try {
       const megaClient = await createClient();
       let data = encodeFunctionData({
-        abi: tokenDetails.abi,
+        abi: TOKEN_DETAILS.abi,
         functionName: "drop",
         args: [],
       });
 
       const calls = [
         {
-          to: tokenDetails.address as `0x${string}`,
+          to: TOKEN_DETAILS.address as `0x${string}`,
           value: BigInt(0),
           data,
         },
@@ -282,7 +227,6 @@ export default function Home({}: HomeProps) {
         calls,
       });
 
-      console.log(userOpHash);
       addLog(
         gasPaymentMethod === "sponsored"
           ? "Sending userOp through Gelato Bundler - Sponsored"
@@ -298,7 +242,6 @@ export default function Home({}: HomeProps) {
       const response = await getTaskStatus(userOpHash);
       const txHash = response.task.transactionHash;
 
-      console.log(txHash);
       // Add success log
       addLog("Minted drop tokens on chain successfully", {
         userOpHash,
@@ -327,18 +270,29 @@ export default function Home({}: HomeProps) {
       setIsTransactionProcessing(false);
     }
   };
-  async function getTaskStatus(userOpHash: string) {
+
+  const getTaskStatus = async (userOpHash: string) => {
     const url = `https://relay.dev.gelato.digital/tasks/status/${userOpHash}`;
     const response = await fetch(url);
     return response.json();
-  }
+  };
+
+  const handleShowTransactionDetails = useCallback((details: any) => {
+    setTransactionDetails({
+      isOpen: true,
+      userOpHash: details.userOpHash,
+      txHash: details.txHash,
+      gasDetails: details.gasDetails,
+      isSponsored: details.isSponsored,
+    });
+  }, []);
 
   useEffect(() => {
     async function createAccount() {
       if (walletClient) {
         try {
           setIsInitializing(true);
-          const megaClient = await createClient();
+          await createClient();
         } catch (error) {
           console.error("Failed to create mega client:", error);
           toast.error("Failed to initialize wallet");
@@ -360,16 +314,6 @@ export default function Home({}: HomeProps) {
       );
     }
   }, [tokenHoldings, gasToken]);
-
-  const handleShowTransactionDetails = useCallback((details: any) => {
-    setTransactionDetails({
-      isOpen: true,
-      userOpHash: details.userOpHash,
-      txHash: details.txHash,
-      gasDetails: details.gasDetails,
-      isSponsored: details.isSponsored,
-    });
-  }, []);
 
   return (
     <ThemeProvider
@@ -411,11 +355,14 @@ export default function Home({}: HomeProps) {
                   <LoadingSpinner />
                 </div>
               ) : !user ? (
-                <div className="w-full flex flex-col p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
+                <div className="w-full flex flex-col items-center justify-center p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A] h-[244px] gap-y-6">
+                  <span className="block text-md text-white font-medium">Playground</span>
                   <div className="flex flex-col items-center justify-center">
                     <GelatoMegaConnectButton>
-                      <div className="w-32 py-3 bg-zinc-800 rounded-md hover:bg-zinc-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed relative text-center text-sm text-white">
-                        Login
+                      <div className="flex items-center justify-center w-[130px] h-[44px] py-2.5 px-4 bg-[#2970FF] rounded-md hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed relative text-sm text-white font-medium">
+                        <span className="text-sm text-white font-medium">
+                          Login
+                        </span>
                       </div>
                     </GelatoMegaConnectButton>
                   </div>

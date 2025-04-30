@@ -1,6 +1,6 @@
-import { ExternalLink, Info, Layers } from "lucide-react";
-import { chainConfig } from "@/app/blockchain/config";
-import { useState, useEffect } from "react";
+import { Info, Layers } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { formatRelativeTime } from "@/lib/utils";
 
 interface ActivityLogProps {
   logs: {
@@ -34,34 +34,7 @@ export default function ActivityLog({ logs, onShowDetails }: ActivityLogProps) {
   }, []);
 
   // Get the last 4 logs and reverse them to show the latest first
-  const recentLogs = [...logs.slice(-4)].reverse();
-
-  const formatTimeAgo = (timestamp: string) => {
-    try {
-      const now = new Date().getTime();
-      const past = new Date(timestamp).getTime();
-      const diff = now - past;
-
-      // Convert to minutes
-      const minutes = Math.floor(diff / (1000 * 60));
-
-      if (minutes < 1) return "just now";
-      if (minutes === 1) return "1 minute ago";
-      if (minutes < 60) return `${minutes} minutes ago`;
-
-      // Convert to hours
-      const hours = Math.floor(minutes / 60);
-      if (hours === 1) return "1 hour ago";
-      if (hours < 24) return `${hours} hours ago`;
-
-      // Convert to days
-      const days = Math.floor(hours / 24);
-      if (days === 1) return "1 day ago";
-      return `${days} days ago`;
-    } catch (error) {
-      return "";
-    }
-  };
+  const recentLogs = useMemo(() => [...logs.slice(-4)].reverse(), [logs]);
 
   return (
     <div className="w-full flex flex-col p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
@@ -88,9 +61,7 @@ export default function ActivityLog({ logs, onShowDetails }: ActivityLogProps) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-green-400 truncate block flex-1 mr-4">
-                      {typeof log.message === "string"
-                        ? log.message
-                        : log.message}
+                      {log.message}
                     </span>
                     {log.details && (
                       <button
@@ -106,7 +77,7 @@ export default function ActivityLog({ logs, onShowDetails }: ActivityLogProps) {
 
               {/* Timestamp */}
               <div className="text-xs text-zinc-500">
-                {formatTimeAgo(log.timestamp)}
+                {formatRelativeTime(log.timestamp)}
               </div>
             </div>
           </div>

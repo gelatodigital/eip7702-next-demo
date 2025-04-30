@@ -1,37 +1,27 @@
-import { QueryClient } from "@tanstack/react-query";
-import { defineChain } from "viem";
 import { sepolia } from "viem/chains";
-import { http, createConfig } from "wagmi";
-import { FaEthereum, FaBitcoin } from "react-icons/fa";
+import { FaEthereum } from "react-icons/fa";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
 
-export const chainConfig = sepolia;
-export const usdcAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
-export const wethAddress = "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9";
+// Default chain for the app. Can be changed to any other chain supported by viem
+export const defaultChain = sepolia;
 
 export const TOKEN_CONFIG = {
   USDC: {
-    address: usdcAddress,
+    address: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
     symbol: "USDC",
     decimals: 6,
     icon: HiOutlineCurrencyDollar,
   },
   WETH: {
-    address: wethAddress,
+    address: "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9",
     symbol: "WETH",
     decimals: 18,
     icon: FaEthereum,
   },
 };
 
-export const tokenDetails = {
+export const TOKEN_DETAILS = {
   address: "0xE83d80DD2462a053390863505D56D40D6F028E92",
-  abi2: [
-    "function drop() external",
-    "function stake() external",
-    "function balanceOf(address) external view returns(uint256)",
-    "function staked(address) external view returns(uint256)",
-  ],
   abi: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {

@@ -3,8 +3,8 @@
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 import { GelatoMegaContextProvider } from "@gelatomega/react-sdk";
-import { sepolia } from "viem/chains";
 import { http } from "wagmi";
+import { defaultChain } from "@/constants/blockchain";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,9 +13,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       settings={{
         appId: process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID as string,
         wagmiConfigParameters: {
-          chains: [sepolia],
+          chains: [defaultChain],
           transports: {
-            [sepolia.id]: http(),
+            [defaultChain.id]: http(),
           },
         },
       }}

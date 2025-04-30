@@ -5,14 +5,13 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@/components/common/Dialog";
+import { Button } from "@/components/common/Button";
 import { useState, useEffect } from "react";
-import { parseEther, formatUnits, http } from "viem";
-import { TOKEN_CONFIG, chainConfig } from "@/app/blockchain/config";
+import { formatUnits } from "viem";
 import { ExternalLink } from "lucide-react";
 import { getEstimatedFee } from "@gelatomega/core/oracle";
-
+import { defaultChain, TOKEN_CONFIG } from "@/constants/blockchain";
 interface GasEstimationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,17 +27,26 @@ export function GasEstimationModal({
   onConfirm,
   megaClient,
   gasToken,
-  tokenBalance,
 }: GasEstimationModalProps) {
   const [estimatedGas, setEstimatedGas] = useState<string>("");
   const [isEstimating, setIsEstimating] = useState(false);
 
+  /**
+   * Reset the estimated gas value whenever the modal is opened
+   * This ensures we start with a fresh state for each new estimation
+   */
   useEffect(() => {
     if (isOpen) {
       setEstimatedGas("");
     }
   }, [isOpen]);
-
+  
+  /**
+   * Formats a token balance from raw value to human-readable format
+   * @param value - The raw token amount as a string
+   * @param decimals - The number of decimals for the token
+   * @returns Formatted balance string with up to 4 decimal places
+   */
   const formatBalance = (value: string, decimals: number) => {
     try {
       return parseFloat(formatUnits(BigInt(value), decimals)).toLocaleString(
@@ -53,6 +61,11 @@ export function GasEstimationModal({
     }
   };
 
+  /**
+   * Estimates the gas fee for a transaction using the Gelato oracle
+   * Fetches the estimated fee based on the selected gas token and a fixed gas limit
+   * Updates the UI with the formatted estimated gas amount or an error message
+   */
   const estimateGasFee = async () => {
     try {
       setIsEstimating(true);
@@ -103,7 +116,7 @@ export function GasEstimationModal({
               <div className="flex items-center justify-between">
                 <span className="text-sm text-zinc-400">Token Address:</span>
                 <a
-                  href={`${chainConfig.blockExplorers.default.url}/token/${TOKEN_CONFIG[gasToken].address}`}
+                  href={`${defaultChain.blockExplorers.default.url}/token/${TOKEN_CONFIG[gasToken].address}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
@@ -127,7 +140,7 @@ export function GasEstimationModal({
                   </a>
                 ) : (
                   <a
-                    href={`${chainConfig.blockExplorers.default.url}/address/${TOKEN_CONFIG[gasToken].address}`}
+                    href={`${defaultChain.blockExplorers.default.url}/address/${TOKEN_CONFIG[gasToken].address}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"

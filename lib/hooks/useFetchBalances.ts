@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Address, formatEther, formatUnits } from "viem";
 import {
-  chainConfig,
+  defaultChain,
   TOKEN_CONFIG,
-  tokenDetails,
-} from "@/app/blockchain/config";
+} from "@/constants/blockchain";
 import { createPublicClient, http } from "viem";
+import { TOKEN_DETAILS } from "@/constants/blockchain";
 
 const publicClient = createPublicClient({
-  chain: chainConfig,
+  chain: defaultChain,
   transport: http(),
 });
 
@@ -58,7 +58,7 @@ async function fetchBalances(address: Address): Promise<TokenHoldingsResponse> {
 
     // Fetch Drop token balance
     const dropBalance = await publicClient.readContract({
-      address: tokenDetails.address as `0x${string}`,
+      address: TOKEN_DETAILS.address as `0x${string}`,
       abi: [
         {
           name: "balanceOf",

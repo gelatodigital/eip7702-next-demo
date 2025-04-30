@@ -1,4 +1,4 @@
-import { Shield } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 export default function FeatureCards() {
@@ -7,10 +7,13 @@ export default function FeatureCards() {
       {/* Complete Wallet Stack */}
       <div className="w-full flex flex-col min-h-[260px] p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
         <div className="w-full flex items-center mb-4">
-          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded mr-3 flex items-center justify-center">
-            <div className="w-5 h-5 border-2 border-[#807872] rounded-md flex items-center justify-center">
-              <div className="w-2.5 h-2.5 border-2 border-[#807872]"></div>
-            </div>
+          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded-[6px] mr-3 flex items-center justify-center">
+            <Image 
+              src="/layers-three.svg" 
+              alt="layers-three" 
+              width={24} 
+              height={24} 
+            />
           </div>
           <h3 className="text-text-title text-md font-medium break-words">
             Complete Wallet Stack
@@ -25,17 +28,13 @@ export default function FeatureCards() {
       {/* High-Performance Gas Stack */}
       <div className="w-full flex flex-col min-h-[260px] p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
         <div className="w-full flex items-center mb-4">
-          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded mr-3 flex items-center justify-center">
-            <div className="w-5 h-5 flex flex-col">
-              <div className="flex mb-1">
-                <div className="w-1.5 h-1.5 bg-[#807872] mr-1"></div>
-                <div className="w-1.5 h-1.5 bg-[#807872]"></div>
-              </div>
-              <div className="flex">
-                <div className="w-1.5 h-1.5 bg-[#807872] mr-1"></div>
-                <div className="w-1.5 h-1.5 bg-[#807872]"></div>
-              </div>
-            </div>
+          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded-[6px] mr-3 flex items-center justify-center">
+            <Image
+              src="/zap.svg"
+              alt="zap"
+              width={24}
+              height={24}
+            />
           </div>
           <h3 className="text-text-title text-md font-medium break-words">
             High-Performance Gas Stack
@@ -50,8 +49,13 @@ export default function FeatureCards() {
       {/* Wallet-as-a-Service */}
       <div className="w-full flex flex-col min-h-[260px] p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
         <div className="w-full flex items-center mb-4">
-          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded mr-3 flex items-center justify-center">
-            <Shield className="w-5 h-5 text-[#807872]" />
+          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded-[6px] mr-3 flex items-center justify-center">
+            <Image
+              src="/wallet.svg"
+              alt="wallet"
+              width={24}
+              height={24}
+            />
           </div>
           <h3 className="text-text-title text-md font-medium break-words">
             Wallet-as-a-Service
@@ -66,19 +70,13 @@ export default function FeatureCards() {
       {/* Enterprise Ready */}
       <div className="w-full flex flex-col min-h-[260px] p-4 bg-[#161616] border rounded-[12px] border-[#2A2A2A]">
         <div className="w-full flex items-center mb-4">
-          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded mr-3 flex items-center justify-center">
-            <svg
-              className="w-5 h-5 text-[#807872]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94" />
-            </svg>
+          <div className="flex-shrink-0 w-10 h-10 bg-[#252525] rounded-[6px] mr-3 flex items-center justify-center">
+            <Image
+              src="/building.svg"
+              alt="building"
+              width={24}
+              height={24}
+            />
           </div>
           <h3 className="text-text-title text-md font-medium break-words">
             Enterprise Ready

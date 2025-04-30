@@ -3,9 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/common/Dialog";
+import { defaultChain } from "@/constants/blockchain";
+import { truncateHash } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
-import { chainConfig } from "@/app/blockchain/config";
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -28,10 +29,6 @@ export function TransactionModal({
   gasDetails,
   isSponsored,
 }: TransactionModalProps) {
-  const truncateHash = (hash: string) => {
-    return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -58,7 +55,7 @@ export function TransactionModal({
             <div className="flex flex-col gap-2">
               <span className="text-sm font-medium">Transaction</span>
               <a
-                href={`${chainConfig.blockExplorers.default.url}/tx/${txHash}`}
+                href={`${defaultChain.blockExplorers.default.url}/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 inline-flex items-center gap-2 text-sm"

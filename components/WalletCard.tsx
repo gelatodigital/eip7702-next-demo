@@ -1,56 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { Address } from "viem";
-import {
-  Timer,
-  Lock,
-  Coins,
-  ExternalLink,
-  Copy,
-  Check,
-  ChevronRight,
-  Loader2,
-  Wallet,
-} from "lucide-react";
-import {
-  chainConfig,
-  TOKEN_CONFIG,
-  tokenDetails,
-} from "@/app/blockchain/config";
-import { useTokenHoldings } from "@/lib/useFetchBalances";
-import { formatUnits } from "viem";
+import { ExternalLink, Wallet } from "lucide-react";
+import { useTokenHoldings } from "@/lib/hooks/useFetchBalances";
 import Image from "next/image";
-
-type GasPaymentMethod = "sponsored" | "erc20";
-type GasToken = "USDC" | "WETH";
-
-const TokenIcon = ({ token }: { token: "USDC" | "WETH" }) => {
-  const icons = {
-    USDC: (
-      <div className="bg-[#2775CA]/10 p-1.5 rounded-lg">
-        <Image
-          src="/usdc.svg"
-          alt="USDC"
-          width={16}
-          height={16}
-          className="w-4 h-4"
-        />
-      </div>
-    ),
-    WETH: (
-      <div className="bg-[#627EEA]/10 p-1.5 rounded-lg">
-        <Image
-          src="/weth.svg"
-          alt="WETH"
-          width={16}
-          height={16}
-          className="w-4 h-4"
-        />
-      </div>
-    ),
-  };
-
-  return icons[token];
-};
 
 interface WalletCardProps {
   accountAddress: string;
@@ -69,34 +21,25 @@ export default function WalletCard({
     gasToken
   );
 
+  /**
+   * Copies the account address to the clipboard
+   * Sets a timeout to reset the copied state after 2 seconds
+   */
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(accountAddress);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   }, [accountAddress]);
 
+  /**
+   * Opens the account address in a new tab
+   * Uses the Scope Explorer for Sepolia
+   */
   const handleExplorerClick = () => {
     window.open(
       `https://scope.sh/11155111/address/${accountAddress}`,
       "_blank"
     );
-  };
-
-  const getExplorerLink = (address: string) => {
-    return `${chainConfig.blockExplorers.default.url}/address/${address}`;
-  };
-
-  const formatBalance = (value: string, decimals: string) => {
-    try {
-      return parseFloat(
-        formatUnits(BigInt(value), parseInt(decimals))
-      ).toLocaleString(undefined, {
-        maximumFractionDigits: 4,
-        minimumFractionDigits: 0,
-      });
-    } catch (e) {
-      return value;
-    }
   };
 
   return (
