@@ -109,8 +109,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgements
 
-- [Next.js](https://nextjs.org/)
 - [Gelato Network](https://www.gelato.network/)
+- [Next.js](https://nextjs.org/)
 - [Wagmi](https://wagmi.sh/)
 - [Ethers.js](https://docs.ethers.org/)
 - [TailwindCSS](https://tailwindcss.com/)
