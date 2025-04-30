@@ -1,5 +1,9 @@
 # Gelato EIP-7702 Next.js Demo
 
+<div align="center">
+  <img src="./public/gelato-icon.svg" alt="Gelato Logo" width="200" />
+</div>
+
 <hr/>
 
 ![Next.js](https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
@@ -87,7 +91,7 @@ pnpm start
 - 🧮 Gas estimation and transaction modals
 - 📜 Activity log for blockchain actions
 - 🎨 Responsive, modern UI with TailwindCSS
-- 🦄 Powered by Gelato and Wagmi
+- 🦄 Powered by Gelato
 
 ---
 
