@@ -75,8 +75,8 @@ pnpm start
 - `/components` - Reusable UI and feature components
 - `/lib` - Utility functions and custom hooks
 - `/public` - Static assets (images, SVGs, etc.)
-- `/constants` - (Recommended) Project-wide constants (add as needed)
-- `/providers` - (Recommended) React context and global providers (add as needed)
+- `/constants` - Project-wide constants (add as needed)
+- `/providers` - React context and global providers (add as needed)
 
 ---
 
