@@ -1,8 +1,4 @@
-# Gelato EIP-7702 Next.js Demo
-
-<div align="center">
-  <img src="./public/gelato-icon.svg" alt="Gelato Logo" width="200" />
-</div>
+# Gelato EIP-7702 Next.js Demo <img src="./public/gelato-icon.svg" alt="Gelato Logo" width="32" />
 
 <hr/>
 
